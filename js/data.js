@@ -98,16 +98,6 @@ const projects = [
     link: { href: 'https://github.com/LucasM548/Applications_Automatical_Installer', text: 'voir le Repository' }
   },
   {
-    image: '💎',
-    year: '2025',
-    status: { label: 'Terminé', className: 'status-completed' },
-    title: 'Stones Collection',
-    description:
-      "Site pour stockée la liste des pierres que ma copine possède.",
-    tags: ['html', 'css', 'js', "base de données", "API"],
-    link: { href: 'https://stones-collection.netlify.app/', text: 'Voir le site' }
-  },
-  {
     image: '🎮',
     imageUrl: 'img/Report with WintrChess cover.png',
     year: '2025',
@@ -172,7 +162,7 @@ function renderProjects(list) {
               <div class="project-tags">
                 ${p.tags.map((t) => `<span class="tag">${t}</span>`).join('')}
               </div>
-              <a href="${p.link.href}" class="project-link" target="_blank" rel="noopener noreferrer">${p.link.text}</a>
+              ${p.link ? `<a href="${p.link.href}" class="project-link" target="_blank" rel="noopener noreferrer">${p.link.text}</a>` : ''}
             </div>
           </div>
         </div>
