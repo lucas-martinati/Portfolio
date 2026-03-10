@@ -1,69 +1,87 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-<meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Lucas Martinati - Développeur Créatif</title>
- <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucas Martinati - Développeur Créatif</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
- <div class="animated-bg">
-  <div class="mouse-glow"></div>
-  <div class="floating-shapes">
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
-        <div class="shape"></div>
+    <div class="animated-bg">
+        <div class="glow-blob blob-1"></div>
+        <div class="glow-blob blob-2"></div>
+        <div class="glow-blob blob-3"></div>
     </div>
-</div>
 
-<header>
-    <nav>
-  <div class="logo">LM_DEV</div>
-  <ul class="nav-links">
-   <li><a href="#about">À propos</a></li>
-   <li><a href="#projects">Projets</a></li>
-  </ul>
- </nav>
-</header>
+    <header>
+        <nav>
+            <div class="logo">LM_DEV</div>
+            <ul class="nav-links">
+                <li><a href="#about">À propos</a></li>
+                <li><a href="#projects">Projets</a></li>
+                <li><a href="#education">Parcours</a></li>
+            </ul>
+        </nav>
+    </header>
 
-<section class="hero">
-    <div class="hero-content">
-        <h1>Lucas Martinati</h1>
-        <p class="subtitle">Développeur Créatif & Étudiant Passionné</p>
-    </div>
-    <a href="#about" class="scroll-indicator" aria-label="Faire défiler vers le contenu">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-    </a>
-</section>
-
-<section class="about" id="about">
-    <h2 class="section-title">À propos</h2>
-    <div class="code-bio">
-        <div class="code-header">
-            <div class="code-dots">
-                <div class="dot red"></div>
-                <div class="dot yellow"></div>
-                <div class="dot green"></div>
-            </div>
-            <div class="file-name">lucas-martinati.js</div>
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Lucas Martinati</h1>
+            <p class="subtitle">Développeur Créatif & Étudiant Passionné</p>
         </div>
-        <div class="code-content" id="code-content"></div>
-    </div>
-    <div class="skills-container" id="skills-container">
-    </div>
-</section>
+        <a href="#about" class="scroll-indicator" aria-label="Faire défiler vers le contenu">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+        </a>
+    </section>
 
-<section class="projects" id="projects">
-    <h2 class="section-title">Mes Projets</h2>
-    <div class="projects-timeline" id="projects-timeline">
-    </div>
-</section>
+    <section class="about" id="about">
+        <h2 class="section-title">À propos</h2>
+        <div class="code-bio">
+            <div class="code-header">
+                <div class="code-dots">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                </div>
+                <div class="file-name">lucas-martinati.js</div>
+            </div>
+            <div class="code-content" id="code-content"></div>
+        </div>
+        <div class="skills-container" id="skills-container">
+        </div>
+    </section>
 
-<script src="js/data.js"></script>
-<script src="js/script.js"></script>
+    <section class="projects" id="projects">
+        <h2 class="section-title">Mes Projets</h2>
+        <div class="projects-timeline" id="projects-timeline">
+        </div>
+    </section>
+
+    <section class="education" id="education">
+        <h2 class="section-title">Mon Parcours</h2>
+        <div class="education-timeline" id="education-timeline">
+        </div>
+    </section>
+
+    <section class="languages" id="languages">
+        <h2 class="section-title">Langues</h2>
+        <div class="languages-container" id="languages-container">
+        </div>
+    </section>
+
+    <script src="js/data.js"></script>
+    <script src="js/script.js"></script>
 </body>
+
 </html>

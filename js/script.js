@@ -20,25 +20,27 @@ document.addEventListener('mousemove', (e) => {
 
 // Animation d'entrée
 const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
+    threshold: 0.15,
+    rootMargin: '0px 0px -20px 0px'
 };
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
+            entry.target.style.transform = 'translateY(0) scale(1)';
+            observer.unobserve(entry.target); // Ne jouer l'animation qu'une seule fois
         }
     });
 }, observerOptions);
 
 // Observer tous les éléments à animer
-document.querySelectorAll('.skill-card, .project-item, .code-bio').forEach(el => {
+document.querySelectorAll('.skill-card, .project-item, .code-bio, .education-item, .language-card').forEach(el => {
     el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    el.style.transform = 'translateY(40px) scale(0.98)';
+    el.style.transition = 'opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
     observer.observe(el);
 });
+
 
 // Animation spéciale pour les projets
 const projectItems = document.querySelectorAll('.project-item');
@@ -62,35 +64,23 @@ document.querySelectorAll('.project-card').forEach(card => {
         const y = e.clientY - rect.top;
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
-        // Normaliser et borner la position pour réduire l'effet aux coins
-        let percentX = (x - centerX) / centerX; // [-1, 1]
-        let percentY = (y - centerY) / centerY; // [-1, 1]
+        let percentX = (x - centerX) / centerX;
+        let percentY = (y - centerY) / centerY;
         const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
-        percentX = clamp(percentX, -0.8, 0.8);
-        percentY = clamp(percentY, -0.8, 0.8);
-        // Angle max réduit pour un hover plus subtil
-        const maxTilt = 5; // degrés
-        const rotateX = -(percentY * maxTilt); // inversé pour un mouvement naturel
+        percentX = clamp(percentX, -1, 1);
+        percentY = clamp(percentY, -1, 1);
+        const maxTilt = 4; // Subtler tilt for glassmorphism
+        const rotateX = -(percentY * maxTilt);
         const rotateY = percentX * maxTilt;
 
-        card.style.transform = `perspective(1800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(0)`;
+        card.style.transform = `perspective(2000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        card.style.zIndex = "10";
     });
 
     card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1800px) rotateX(0) rotateY(0) translateZ(0)';
+        card.style.transform = 'perspective(2000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+        card.style.zIndex = "1";
     });
 });
 
 // (Formulaire supprimé du HTML) — gestionnaire retiré
-
-// Animation des compétences au scroll
-const skillCards = document.querySelectorAll('.skill-card');
-skillCards.forEach((card, index) => {
-    card.addEventListener('mouseenter', () => {
-        card.style.transform = 'translateY(-10px) rotateY(5deg) scale(1.05)';
-    });
-
-    card.addEventListener('mouseleave', () => {
-        card.style.transform = 'translateY(0) rotateY(0) scale(1)';
-    });
-});
