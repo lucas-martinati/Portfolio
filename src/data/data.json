@@ -386,28 +386,42 @@
     ],
     "education": [
         {
+            "icon": "🎓",
+            "type": "education",
             "period": "2025 - 2028",
-            "title": "BUT Informatique",
+            "title": "Bachelor Universitaire de Technologie (BUT) Informatique",
             "school": "IUT Nancy-Charlemagne, Université de Lorraine"
         },
         {
+            "icon": "📜",
+            "type": "education",
             "period": "2025",
             "title": "BAC Général Mention Bien",
+            "highlight": "1473,10 points",
             "school": "Lycée Jean Zay — Maths/Physique chimie/Math expert"
         },
         {
-            "period": "2022",
-            "title": "Stagiaire, Chef de rayon",
-            "school": "Intermarché, Jarny (Facing & Gestion du stock)"
-        },
-        {
+            "icon": "📜",
+            "type": "education",
             "period": "2022",
             "title": "Brevet Mention Bien",
+            "highlight": "566 points",
             "school": "Collège Alfred Mézières, Jarny"
         },
         {
-            "period": "2022",
+            "icon": "🏆",
+            "type": "certification",
+            "period": "26/03/2025",
             "title": "Certification PIX",
+            "highlight": "583 PIX",
+            "school": "Score de 583 PIX en Terminale"
+        },
+        {
+            "icon": "🏆",
+            "type": "certification",
+            "period": "02/04/2022",
+            "title": "Certification PIX",
+            "highlight": "321 PIX",
             "school": "Score de 321 PIX en 3ème"
         }
     ],
