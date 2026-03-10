@@ -147,6 +147,7 @@
         },
         {
             "emoji": "🗂️",
+            "imageUrl": "img/nautilus-taildrop.png",
             "year": "2025",
             "status": {
                 "label": "Terminé",
