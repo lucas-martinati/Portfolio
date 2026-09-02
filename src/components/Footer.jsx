@@ -3,6 +3,7 @@ import { GithubIcon, LinkedinIcon, MailIcon, ExternalLinkIcon, CopyIcon, CheckIc
 
 export default function Footer({ developer }) {
     const [copied, setCopied] = useState(false);
+    const isSeeking = developer.recruitment?.enabled ?? developer.recruitment?.seeking ?? true;
 
     const handleCopyEmail = async () => {
         try {
@@ -36,8 +37,9 @@ export default function Footer({ developer }) {
                     </div>
                     <h2 className="section-title">Restons en contact</h2>
                     <p className="contact-subtitle">
-                        À la recherche d'une alternance, d'un stage ou envie d'échanger autour d'un projet technologique ?
-                        N'hésitez pas à me joindre sur mes réseaux ou par email.
+                        {isSeeking
+                            ? "À la recherche d'une alternance, d'un stage ou envie d'échanger autour d'un projet technologique ? N'hésitez pas à me joindre sur mes réseaux ou par email."
+                            : "Envie d'échanger autour d'un projet technologique, d'une collaboration open-source ou simplement discuter tech ? N'hésitez pas à me joindre sur mes réseaux ou par email."}
                     </p>
                 </div>
 
@@ -119,6 +121,8 @@ export default function Footer({ developer }) {
                             </p>
                             <a
                                 href={`mailto:${developer.email || 'lucasm54800@gmail.com'}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="card-link-text email-action-link"
                             >
                                 {developer.email || 'lucasm54800@gmail.com'}

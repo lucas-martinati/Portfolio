@@ -19,7 +19,47 @@
         "email": "lucasm54800@gmail.com",
         "github": "https://github.com/lucas-martinati",
         "linkedin": "https://www.linkedin.com/in/lucas-martinati-7452bb3b0/",
-        "comment": "Prêt à collaborer sur des projets innovants !"
+        "comment": "Prêt à collaborer sur des projets innovants !",
+        "roles": [
+            "Développeur Full-Stack",
+            "Concepteur d'Outils & Extensions",
+            "Passionné Linux & Open Source",
+            "Étudiant en BUT Informatique"
+        ],
+        "recruitment": {
+            "enabled": true,
+            "badge": "Alternance ciblée 2027-2028 (BUT 3) & Cycle Ingénieur",
+            "passiveBadge": "Actuellement en poste • Projets & Collaborations",
+            "degree": "BUT Informatique (Bac+3) ➔ Diplôme d'Ingénieur (Bac+5)",
+            "school": "IUT Nancy-Charlemagne (Université de Lorraine) ➔ Télécom Nancy",
+            "contract": "Apprentissage / Professionnalisation",
+            "period": "2027 - 2028 (1 an en BUT 3) • Poursuite visée en école d'ingénieurs (Télécom Nancy)",
+            "location": "Nancy / Grand Est / Télétravail",
+            "stack": "React, Next.js, TypeScript, Python, Linux, Bash",
+            "rhythm": "Rythme IUT Nancy-Charlemagne",
+            "strengths": [
+                {
+                    "icon": "⚡",
+                    "title": "Autonomie & Expédition de Produits",
+                    "desc": "Capacité prouvée à concevoir, développer et publier des projets complets (2 extensions sur des stores officiels, 16+ applications en ligne)."
+                },
+                {
+                    "icon": "🔄",
+                    "title": "Double Culture Web Moderne & Système",
+                    "desc": "Maîtrise de l'écosystème React / Next.js / TypeScript alliée à une passion pour Linux, Bash, Systemd et Python."
+                },
+                {
+                    "icon": "📐",
+                    "title": "Rigueur Scientifique & Algorithmique",
+                    "desc": "Bac Mention Bien avec spécialités Maths & Maths Expertes. Solide sens de la logique, conception UML/MCD et algorithmique."
+                },
+                {
+                    "icon": "🚀",
+                    "title": "Curiosité & Proactivité Continue",
+                    "desc": "Veille constante, auto-formation permanente, soucis du détail dans l'expérience utilisateur et code maintenable."
+                }
+            ]
+        }
     },
     "skills": [
         {
@@ -86,6 +126,33 @@
     ],
     "projects": [
         {
+            "emoji": "🔄",
+            "imageUrl": "img/rclonedash.png",
+            "year": "2025",
+            "status": {
+                "label": "Terminé",
+                "className": "status-completed"
+            },
+            "title": "rcloneDash",
+            "description": "Interface web locale puissante pour surveiller et piloter en temps réel les synchronisations bidirectionnelles Rclone (Google Drive), avec analyse journalctl, explorateur de fichiers et gestion des filtres.",
+            "tags": [
+                "Python",
+                "JavaScript",
+                "Linux",
+                "Systemd",
+                "Bash",
+                "Rclone"
+            ],
+            "link": {
+                "href": "https://github.com/lucas-martinati/rcloneDash",
+                "text": "Voir le Repository"
+            },
+            "category": "system",
+            "featured": true,
+            "highlights": "Serveur HTTP natif en Python sans dépendance externe analysant les logs journalctl en direct, avec timer Systemd intelligent et interface web moderne.",
+            "challenges": "Parsing asynchrone des flux de journaux Rclone en temps réel, synchronisation économe en ressources avec garde d'inactivité et intégration des services Systemd sous Linux."
+        },
+        {
             "emoji": "🔥",
             "imageUrl": "img/oneup.png",
             "year": "2025",
@@ -104,7 +171,11 @@
             "link": {
                 "href": "https://lucas-martinati.github.io/OneUp/",
                 "text": "Voir le projet"
-            }
+            },
+            "category": "web",
+            "featured": true,
+            "highlights": "Application hybride web/mobile de défi fitness 365 jours avec Capacitor & React, intégrant un système de persistance temps réel Firebase.",
+            "challenges": "Conception de l'algorithme de progression quotidienne, synchronisation des données multi-devices et ergonomie mobile tactile réactive."
         },
         {
             "emoji": "💎",
@@ -126,7 +197,11 @@
             "link": {
                 "href": "https://stones-collection.netlify.app/",
                 "text": "Voir le site"
-            }
+            },
+            "category": "web",
+            "featured": false,
+            "highlights": "Projet conçu avec passion mettant en pratique des technologies modernes et une architecture propre.",
+            "challenges": "Optimisation des performances, modularité du code et expérience utilisateur intuitive."
         },
         {
             "emoji": "🃏",
@@ -145,7 +220,11 @@
             "link": {
                 "href": "https://mao-game.netlify.app",
                 "text": "Voir le site"
-            }
+            },
+            "category": "web",
+            "featured": false,
+            "highlights": "Projet conçu avec passion mettant en pratique des technologies modernes et une architecture propre.",
+            "challenges": "Optimisation des performances, modularité du code et expérience utilisateur intuitive."
         },
         {
             "emoji": "🗂️",
@@ -165,7 +244,11 @@
             "link": {
                 "href": "https://github.com/lucas-martinati/nautilus-taildrop",
                 "text": "Voir le Repository"
-            }
+            },
+            "category": "system",
+            "featured": false,
+            "highlights": "Extension native pour le gestionnaire de fichiers GNOME Nautilus intégrant Tailscale Taildrop dans le menu contextuel clic droit.",
+            "challenges": "Interfaçage Python avec les API libnautilus-extension et exécution sécurisée des commandes réseau système."
         },
         {
             "emoji": "🤖",
@@ -185,10 +268,15 @@
             "link": {
                 "href": "https://l-gpt.netlify.app/",
                 "text": "Voir le site"
-            }
+            },
+            "category": "web",
+            "featured": false,
+            "highlights": "Application full-stack Next.js reproduisant l'interface et l'expérience utilisateur de ChatGPT avec authentification et persistance Firebase.",
+            "challenges": "Gestion de l'affichage en streaming des tokens et architecture Next.js App Router."
         },
         {
             "emoji": "📝",
+            "imageUrl": "img/pseudocode-interpreter.png",
             "year": "2025",
             "status": {
                 "label": "Terminé",
@@ -203,7 +291,11 @@
             "link": {
                 "href": "https://marketplace.visualstudio.com/items?itemName=LucasM54.PseudoCode-Interpreter",
                 "text": "VS Marketplace"
-            }
+            },
+            "category": "extension",
+            "featured": true,
+            "highlights": "Extension officielle publiée sur le VS Code Marketplace offrant un environnement complet pour écrire et tester du pseudo-code en français.",
+            "challenges": "Écriture de la grammaire syntaxique TextMate, intégration de l'interpréteur en TypeScript et gestion du cycle de vie VS Code."
         },
         {
             "emoji": "📊",
@@ -224,7 +316,11 @@
             "link": {
                 "href": "https://github.com/lucas-martinati/UML-Generator",
                 "text": "Voir le Repository"
-            }
+            },
+            "category": "web",
+            "featured": false,
+            "highlights": "Outil graphique en ligne pour concevoir des Modèles Conceptuels de Données (MCD) avec relations, entités et exportations graphiques.",
+            "challenges": "Calculs vectoriels pour le tracé fluide des liens cardinaux et gestion dynamique du drag-and-drop."
         },
         {
             "emoji": "✨",
@@ -243,7 +339,11 @@
             "link": {
                 "href": "https://chromewebstore.google.com/detail/gemini-ultimate/jhpkldiddcobahfolmjiobbacjbgdegl",
                 "text": "Chrome Web Store"
-            }
+            },
+            "category": "extension",
+            "featured": true,
+            "highlights": "Extension Chrome publiée sur le Chrome Web Store automatisant l'usage de Google Gemini avec raccourcis rapides de changement de modèle.",
+            "challenges": "Manipulation dynamique du DOM de l'application Gemini et synchronisation d'état via les API Chrome Storage et Content Scripts."
         },
         {
             "emoji": "🎮",
@@ -262,7 +362,11 @@
             "link": {
                 "href": "https://chromewebstore.google.com/detail/free-analyze-with-wintrch/ljjbgidgpkhjenpgpjfjidfflnelmpan",
                 "text": "Chrome web store"
-            }
+            },
+            "category": "extension",
+            "featured": false,
+            "highlights": "Extension Chrome facilitant le transfert et l'analyse approfondie des parties d'échecs de Chess.com et Lichess vers WintrChess.",
+            "challenges": "Extraction des métadonnées PGN et intégration non-intrusive dans les interfaces de jeu en temps réel."
         },
         {
             "emoji": "🐧",
@@ -283,7 +387,11 @@
             "link": {
                 "href": "https://lucas-martinati.github.io/SysAdmin/",
                 "text": "Voir le site"
-            }
+            },
+            "category": "web",
+            "featured": false,
+            "highlights": "Plateforme web interactive d'apprentissage Linux avec un terminal simulé complet et un moteur de validation dynamique des commandes.",
+            "challenges": "Modélisation d'un système de fichiers virtuel en mémoire vive (RAM) et émulation des commandes Unix fondamentales."
         },
         {
             "emoji": "🖥️",
@@ -302,7 +410,11 @@
             "link": {
                 "href": "https://github.com/lucas-martinati/SAE-S1-3",
                 "text": "Voir le Repository"
-            }
+            },
+            "category": "system",
+            "featured": false,
+            "highlights": "Suite complète de scripts Bash d'administration, unités Systemd, automatisation de sauvegardes et documentation technique pour Ubuntu 22.04.",
+            "challenges": "Sécurisation des scripts bash, gestion des codes de retour et respect des standards d'administration système d'entreprise."
         },
         {
             "emoji": "💳",
@@ -324,7 +436,11 @@
             "link": {
                 "href": "https://lucasm548.github.io/Flashcard/",
                 "text": "Voir le site"
-            }
+            },
+            "category": "web",
+            "featured": false,
+            "highlights": "Projet conçu avec passion mettant en pratique des technologies modernes et une architecture propre.",
+            "challenges": "Optimisation des performances, modularité du code et expérience utilisateur intuitive."
         },
         {
             "emoji": "🌍",
@@ -343,7 +459,11 @@
             "link": {
                 "href": "https://lucas-martinati.github.io/Can-Vert/",
                 "text": "Voir le site"
-            }
+            },
+            "category": "web",
+            "featured": false,
+            "highlights": "Projet conçu avec passion mettant en pratique des technologies modernes et une architecture propre.",
+            "challenges": "Optimisation des performances, modularité du code et expérience utilisateur intuitive."
         },
         {
             "emoji": "📥",
@@ -364,7 +484,11 @@
             "link": {
                 "href": "https://github.com/LucasM548/Applications_Automatical_Installer",
                 "text": "Voir le Repository"
-            }
+            },
+            "category": "system",
+            "featured": false,
+            "highlights": "Projet conçu avec passion mettant en pratique des technologies modernes et une architecture propre.",
+            "challenges": "Optimisation des performances, modularité du code et expérience utilisateur intuitive."
         },
         {
             "emoji": "🍐",
@@ -384,7 +508,11 @@
             "link": {
                 "href": "https://lucasm548.github.io/Pear-Search/",
                 "text": "Voir le site"
-            }
+            },
+            "category": "web",
+            "featured": false,
+            "highlights": "Projet conçu avec passion mettant en pratique des technologies modernes et une architecture propre.",
+            "challenges": "Optimisation des performances, modularité du code et expérience utilisateur intuitive."
         }
     ],
     "education": [

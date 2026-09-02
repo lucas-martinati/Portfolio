@@ -1,8 +1,41 @@
-import { GithubIcon, LinkedinIcon, MailIcon, ArrowRightIcon } from './Icons';
+import { useState, useEffect, useMemo } from 'react';
+import { GithubIcon, LinkedinIcon, MailIcon, ArrowRightIcon, BriefcaseIcon, CommandIcon, TerminalIcon } from './Icons';
+import { playSound } from '../utils/audio';
+import { getComputedMetrics } from '../utils/metrics';
 
-export default function Hero({ developer = {} }) {
+export default function Hero({ developer = {}, projects = [], education = [], onOpenPalette }) {
+    const [roleIndex, setRoleIndex] = useState(0);
+    const [fadeState, setFadeState] = useState('fade-in');
+
+    const roles = developer.roles || [
+        "Développeur Full-Stack",
+        "Concepteur d'Outils & Extensions",
+        "Passionné Linux & Open Source",
+        "Étudiant en BUT Informatique"
+    ];
+
+    const recruitment = developer.recruitment || {};
+    const isSeeking = recruitment.enabled ?? recruitment.seeking ?? true;
+
+    const metrics = useMemo(() => {
+        return getComputedMetrics({ developer, projects, education });
+    }, [developer, projects, education]);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setFadeState('fade-out');
+            setTimeout(() => {
+                setRoleIndex((prev) => (prev + 1) % roles.length);
+                setFadeState('fade-in');
+            }, 300);
+        }, 3200);
+
+        return () => clearInterval(interval);
+    }, [roles.length]);
+
     const handleScrollTo = (e, id) => {
         e.preventDefault();
+        playSound('click');
         const el = document.getElementById(id);
         if (el) el.scrollIntoView({ behavior: 'smooth' });
     };
@@ -14,17 +47,38 @@ export default function Hero({ developer = {} }) {
     return (
         <section className="hero">
             <div className="hero-content">
-                <div className="hero-badge">
-                    <span className="status-indicator"></span>
-                    <span>Disponible pour alternance &amp; projets</span>
+                {/* Live Availability Status */}
+                <a
+                    href={isSeeking ? "#recruiter" : "#contact"}
+                    className={`hero-badge ${!isSeeking ? 'hero-badge-passive' : ''}`}
+                    onClick={(e) => handleScrollTo(e, isSeeking ? 'recruiter' : 'contact')}
+                    title={isSeeking ? "En savoir plus sur mes recherches d'alternance" : "Collaborons ensemble"}
+                >
+                    <span className={`status-indicator ${!isSeeking ? 'status-passive' : ''}`}></span>
+                    <span>
+                        {isSeeking
+                            ? (recruitment.badge || "Alternance ciblée 2027-2028 (BUT 3) & Cycle Ingénieur")
+                            : (recruitment.passiveBadge || "Actuellement en poste • Projets & Collaborations")}
+                    </span>
+                </a>
+
+                {/* Hero Title */}
+                <h1 className="hero-title">{developer.name || 'Lucas Martinati'}</h1>
+
+                {/* Dynamic Role Switcher */}
+                <div className="hero-role-wrapper">
+                    <span className="hero-role-prefix">Je suis&nbsp;</span>
+                    <span className={`hero-role-dynamic ${fadeState}`}>
+                        {roles[roleIndex]}
+                    </span>
                 </div>
 
-                <h1 className="hero-title">{developer.name || 'Lucas Martinati'}</h1>
-                <p className="hero-role">Développeur Full-Stack &amp; Étudiant Passionné</p>
                 <p className="hero-tagline">
-                    Concepteur d'applications web modernes, d'extensions navigateurs et d'outils d'automatisation.
+                    Concepteur d'applications web modernes, d'extensions de navigateurs/éditeurs et d'outils d'automatisation système.
+                    Rigoureux, autonome et animé par la passion de créer.
                 </p>
 
+                {/* CTA Buttons */}
                 <div className="hero-cta-group">
                     <a
                         href="#projects"
@@ -35,16 +89,44 @@ export default function Hero({ developer = {} }) {
                         <ArrowRightIcon size={18} />
                     </a>
 
-                    <a
-                        href="#contact"
-                        className="btn-secondary"
-                        onClick={(e) => handleScrollTo(e, 'contact')}
-                    >
-                        <MailIcon size={18} />
-                        <span>Me contacter</span>
-                    </a>
+                    {isSeeking ? (
+                        <a
+                            href="#recruiter"
+                            className="btn-secondary btn-recruiter"
+                            onClick={(e) => handleScrollTo(e, 'recruiter')}
+                        >
+                            <BriefcaseIcon size={18} />
+                            <span>Espace Recruteur</span>
+                        </a>
+                    ) : (
+                        <a
+                            href="#contact"
+                            className="btn-secondary"
+                            onClick={(e) => handleScrollTo(e, 'contact')}
+                        >
+                            <MailIcon size={18} />
+                            <span>Me Contacter</span>
+                        </a>
+                    )}
+
+                    {onOpenPalette && (
+                        <button
+                            type="button"
+                            className="hero-palette-btn"
+                            onClick={() => {
+                                playSound('click');
+                                onOpenPalette();
+                            }}
+                            title="Ouvrir la palette de commandes rapide ou le terminal (Cmd+K)"
+                        >
+                            <TerminalIcon size={16} />
+                            <span>Terminal &amp; Actions</span>
+                            <span className="kbd-pill">Cmd+K</span>
+                        </button>
+                    )}
                 </div>
 
+                {/* Social Quick Circles */}
                 <div className="hero-social-minimal">
                     {githubUrl && (
                         <a
@@ -54,6 +136,7 @@ export default function Hero({ developer = {} }) {
                             className="hero-social-circle github-circle"
                             aria-label={`GitHub de ${developer.name || 'Lucas Martinati'}`}
                             title="GitHub"
+                            onClick={() => playSound('hover')}
                         >
                             <GithubIcon size={18} />
                         </a>
@@ -67,6 +150,7 @@ export default function Hero({ developer = {} }) {
                             className="hero-social-circle linkedin-circle"
                             aria-label={`LinkedIn de ${developer.name || 'Lucas Martinati'}`}
                             title="LinkedIn"
+                            onClick={() => playSound('hover')}
                         >
                             <LinkedinIcon size={18} />
                         </a>
@@ -75,16 +159,31 @@ export default function Hero({ developer = {} }) {
                     {emailUrl && (
                         <a
                             href={emailUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="hero-social-circle email-circle"
                             aria-label={`Envoyer un email à ${developer.name || 'Lucas Martinati'}`}
                             title="Email"
+                            onClick={() => playSound('hover')}
                         >
                             <MailIcon size={18} />
                         </a>
                     )}
                 </div>
+
+                {/* Key Metrics Row */}
+                <div className="hero-metrics-row">
+                    {metrics.map((m, idx) => (
+                        <div key={idx} className="hero-metric-item">
+                            <div className="metric-number">{m.value}</div>
+                            <div className="metric-label">{m.label}</div>
+                            <div className="metric-sub">{m.sub}</div>
+                        </div>
+                    ))}
+                </div>
             </div>
 
+            {/* Scroll Indicator */}
             <a
                 href="#about"
                 className="scroll-indicator"
@@ -98,4 +197,3 @@ export default function Hero({ developer = {} }) {
         </section>
     );
 }
-
