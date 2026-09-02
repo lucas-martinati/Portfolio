@@ -8,6 +8,7 @@ import SkillCard from './components/SkillCard';
 import ProjectCard from './components/ProjectCard';
 import EducationCard from './components/EducationCard';
 import LanguageCard from './components/LanguageCard';
+import Footer from './components/Footer';
 import ScrollReveal from './components/ScrollReveal';
 
 export default function App() {
@@ -24,8 +25,8 @@ export default function App() {
     return (
         <>
             <AnimatedBackground />
-            <Navbar />
-            <Hero />
+            <Navbar developer={data.developer} />
+            <Hero developer={data.developer} />
 
             {/* À propos */}
             <section className="about" id="about">
@@ -77,6 +78,11 @@ export default function App() {
                     ))}
                 </div>
             </section>
+
+            {/* Contact & Réseaux */}
+            <ScrollReveal>
+                <Footer developer={data.developer} />
+            </ScrollReveal>
         </>
     );
 }

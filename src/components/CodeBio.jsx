@@ -12,6 +12,9 @@ export default function CodeBio({ developer }) {
         const arr = (list) => `[${list.map((it) => str(it)).join(', ')}]`;
         const pad2 = (n) => String(n).padStart(2, '0');
 
+        const githubSlug = developer.github ? developer.github.replace(/https?:\/\/github\.com\/?/, '').replace(/\/$/, '') : 'lucas-martinati';
+        const linkedinSlug = developer.linkedin ? developer.linkedin.replace(/https?:\/\/(www\.)?linkedin\.com\/in\/?/, '').replace(/\/$/, '') : 'lucas-martinati';
+
         const lines = [
             `<span class="keyword">const</span> ${prop('developer')} = {`,
             `&nbsp;&nbsp;${prop('name')}: ${str(developer.name)},`,
@@ -21,7 +24,9 @@ export default function CodeBio({ developer }) {
             `&nbsp;&nbsp;${prop('mindset')}: ${str(developer.mindset)},`,
             `&nbsp;&nbsp;${prop('currentFocus')}: ${str(developer.currentFocus)},`,
             `&nbsp;&nbsp;${prop('availability')}: ${val(developer.availability)},`,
-            `&nbsp;&nbsp;${prop('email')}: ${str(developer.email)}`,
+            `&nbsp;&nbsp;${prop('email')}: ${str(developer.email)},`,
+            `&nbsp;&nbsp;${prop('github')}: ${str(githubSlug)},`,
+            `&nbsp;&nbsp;${prop('linkedin')}: ${str(linkedinSlug)}`,
             `};`,
             ``,
             `<span class="comment">// ${developer.comment}</span>`
