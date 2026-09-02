@@ -52,6 +52,21 @@ export default function Navbar({ developer = {}, onOpenPalette, onShowToast }) {
         if (el) el.scrollIntoView({ behavior: 'smooth' });
     };
 
+    // Lock body scroll when mobile menu is open
+    useEffect(() => {
+        if (!mobileMenuOpen) return;
+        const original = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        const handleKeyDown = (e) => {
+            if (e.key === 'Escape') setMobileMenuOpen(false);
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => {
+            document.body.style.overflow = original;
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [mobileMenuOpen]);
+
     const handleSoundToggle = () => {
         const nextState = toggleSound();
         setSoundActive(nextState);
@@ -65,8 +80,9 @@ export default function Navbar({ developer = {}, onOpenPalette, onShowToast }) {
     const emailUrl = developer.email ? `mailto:${developer.email}` : 'mailto:lucasm54800@gmail.com';
 
     return (
-        <header>
-            <nav>
+        <>
+            <header>
+                <nav>
                 <a
                     href="#"
                     className="logo"
@@ -131,9 +147,8 @@ export default function Navbar({ developer = {}, onOpenPalette, onShowToast }) {
                     </li>
                 </ul>
 
-                {/* Nav Actions */}
-                <div className="nav-socials">
-                    {/* Command Palette Trigger */}
+                {/* Desktop Nav Controls (hidden on mobile) */}
+                <div className="nav-desktop-actions">
                     {onOpenPalette && (
                         <button
                             type="button"
@@ -201,8 +216,10 @@ export default function Navbar({ developer = {}, onOpenPalette, onShowToast }) {
                             <MailIcon size={18} />
                         </a>
                     )}
+                </div>
 
-                    {/* Mobile Hamburger Toggle */}
+                {/* Mobile Header Controls (visible only on mobile) */}
+                <div className="nav-mobile-controls">
                     <button
                         type="button"
                         className="mobile-nav-toggle"
@@ -211,6 +228,7 @@ export default function Navbar({ developer = {}, onOpenPalette, onShowToast }) {
                             setMobileMenuOpen(!mobileMenuOpen);
                         }}
                         aria-label="Menu de navigation"
+                        aria-expanded={mobileMenuOpen}
                     >
                         <span className={`bar ${mobileMenuOpen ? 'open' : ''}`}></span>
                         <span className={`bar ${mobileMenuOpen ? 'open' : ''}`}></span>
@@ -218,34 +236,114 @@ export default function Navbar({ developer = {}, onOpenPalette, onShowToast }) {
                     </button>
                 </div>
             </nav>
+        </header>
 
-            {/* Mobile Nav Overlay */}
-            {mobileMenuOpen && (
-                <div className="mobile-nav-menu">
-                    <a href="#about" onClick={(e) => handleClick(e, 'about')}>À propos</a>
-                    <a href="#projects" onClick={(e) => handleClick(e, 'projects')}>Projets</a>
-                    {isSeeking && (
-                        <a href="#recruiter" className="mobile-recruiter-link" onClick={(e) => handleClick(e, 'recruiter')}>
-                            🟢 Recrutement Alternance
+        {/* Mobile Nav Overlay & Drawer (rendered outside header so containing block is true viewport) */}
+        {mobileMenuOpen && (
+            <div className="mobile-nav-container">
+                <div className="mobile-nav-backdrop" onClick={() => setMobileMenuOpen(false)} />
+                <div className="mobile-nav-menu" role="dialog" aria-modal="true" aria-label="Menu de navigation mobile">
+                    <div className="mobile-nav-links">
+                        <a
+                            href="#about"
+                            className={`mobile-nav-link ${activeSection === 'about' ? 'active' : ''}`}
+                            onClick={(e) => handleClick(e, 'about')}
+                        >
+                            <span>À propos</span>
+                            <span className="mobile-link-arrow">→</span>
                         </a>
-                    )}
-                    <a href="#education" onClick={(e) => handleClick(e, 'education')}>Parcours</a>
-                    <a href="#contact" onClick={(e) => handleClick(e, 'contact')}>Contact</a>
-                    {onOpenPalette && (
+                        <a
+                            href="#projects"
+                            className={`mobile-nav-link ${activeSection === 'projects' ? 'active' : ''}`}
+                            onClick={(e) => handleClick(e, 'projects')}
+                        >
+                            <span>Projets</span>
+                            <span className="mobile-link-pill">16+</span>
+                        </a>
+                        {isSeeking && (
+                            <a
+                                href="#recruiter"
+                                className={`mobile-nav-link recruiter ${activeSection === 'recruiter' ? 'active' : ''}`}
+                                onClick={(e) => handleClick(e, 'recruiter')}
+                            >
+                                <span>🎯 Espace Recruteur</span>
+                                <span className="mobile-link-arrow">→</span>
+                            </a>
+                        )}
+                        <a
+                            href="#education"
+                            className={`mobile-nav-link ${activeSection === 'education' ? 'active' : ''}`}
+                            onClick={(e) => handleClick(e, 'education')}
+                        >
+                            <span>Parcours &amp; Diplômes</span>
+                            <span className="mobile-link-arrow">→</span>
+                        </a>
+                        <a
+                            href="#contact"
+                            className={`mobile-nav-link ${activeSection === 'contact' ? 'active' : ''}`}
+                            onClick={(e) => handleClick(e, 'contact')}
+                        >
+                            <span>Contact &amp; Réseaux</span>
+                            <span className="mobile-link-arrow">→</span>
+                        </a>
+                    </div>
+
+                    <div className="mobile-nav-divider" />
+
+                    {/* Sound Action */}
+                    <div className="mobile-actions-panel">
                         <button
                             type="button"
-                            className="mobile-cmd-btn"
-                            onClick={() => {
-                                setMobileMenuOpen(false);
-                                onOpenPalette();
-                            }}
+                            className={`mobile-action-card-btn mobile-sound-card-btn ${soundActive ? 'active' : ''}`}
+                            onClick={handleSoundToggle}
                         >
-                            <TerminalIcon size={16} />
-                            <span>Terminal &amp; Recherche (Cmd+K)</span>
+                            {soundActive ? <VolumeUpIcon size={18} /> : <VolumeOffIcon size={18} />}
+                            <span>{soundActive ? 'Effets sonores : Activés' : 'Effets sonores : Désactivés'}</span>
                         </button>
-                    )}
+                    </div>
+
+                    {/* Social Icons row */}
+                    <div className="mobile-socials-grid">
+                        {githubUrl && (
+                            <a
+                                href={githubUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="mobile-social-tile"
+                                onClick={() => playSound('click')}
+                            >
+                                <GithubIcon size={20} />
+                                <span>GitHub</span>
+                            </a>
+                        )}
+                        {linkedinUrl && (
+                            <a
+                                href={linkedinUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="mobile-social-tile"
+                                onClick={() => playSound('click')}
+                            >
+                                <LinkedinIcon size={20} />
+                                <span>LinkedIn</span>
+                            </a>
+                        )}
+                        {emailUrl && (
+                            <a
+                                href={emailUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="mobile-social-tile"
+                                onClick={() => playSound('click')}
+                            >
+                                <MailIcon size={20} />
+                                <span>Email</span>
+                            </a>
+                        )}
+                    </div>
                 </div>
-            )}
-        </header>
+            </div>
+        )}
+    </>
     );
 }
