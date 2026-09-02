@@ -1,7 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { CopyIcon, CheckIcon } from './Icons';
 
 export default function CodeBio({ developer }) {
     const codeRef = useRef(null);
+    const [copied, setCopied] = useState(false);
 
     useEffect(() => {
         if (!codeRef.current) return;
@@ -41,6 +43,35 @@ export default function CodeBio({ developer }) {
             .join('');
     }, [developer]);
 
+    const handleCopy = async () => {
+        const githubSlug = developer.github ? developer.github.replace(/https?:\/\/github\.com\/?/, '').replace(/\/$/, '') : 'lucas-martinati';
+        const linkedinSlug = developer.linkedin ? developer.linkedin.replace(/https?:\/\/(www\.)?linkedin\.com\/in\/?/, '').replace(/\/$/, '') : 'lucas-martinati';
+
+        const rawCode = `const developer = {
+  name: '${developer.name}',
+  status: '${developer.status}',
+  passion: '${developer.passion}',
+  skills: [${developer.skills.map(s => `'${s}'`).join(', ')}],
+  mindset: '${developer.mindset}',
+  currentFocus: '${developer.currentFocus}',
+  availability: ${developer.availability},
+  email: '${developer.email}',
+  github: '${githubSlug}',
+  linkedin: '${linkedinSlug}'
+};
+
+// ${developer.comment}`;
+
+        try {
+            await navigator.clipboard.writeText(rawCode);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        } catch {
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        }
+    };
+
     return (
         <div className="code-bio">
             <div className="code-header">
@@ -50,6 +81,16 @@ export default function CodeBio({ developer }) {
                     <div className="dot green"></div>
                 </div>
                 <div className="file-name">lucas-martinati.js</div>
+                <button
+                    type="button"
+                    className={`code-copy-btn ${copied ? 'copied' : ''}`}
+                    onClick={handleCopy}
+                    aria-label="Copier le code source"
+                    title="Copier le code"
+                >
+                    {copied ? <CheckIcon size={14} /> : <CopyIcon size={14} />}
+                    <span>{copied ? 'Copié !' : 'Copier'}</span>
+                </button>
             </div>
             <div className="code-content" ref={codeRef}></div>
         </div>

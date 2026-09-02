@@ -1,6 +1,46 @@
+import { useState, useEffect } from 'react';
 import { GithubIcon, LinkedinIcon, MailIcon } from './Icons';
 
 export default function Navbar({ developer = {} }) {
+    const [activeSection, setActiveSection] = useState('');
+
+    useEffect(() => {
+        const sections = ['about', 'projects', 'education', 'contact'];
+
+        const handleScroll = () => {
+            // Tout en haut de page (dans le Hero) : aucun onglet n'est actif
+            if (window.scrollY < 300) {
+                setActiveSection('');
+                return;
+            }
+
+            // Tout en bas de la page : activer directement Contact
+            const isBottom = (window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 60;
+            if (isBottom) {
+                setActiveSection('contact');
+                return;
+            }
+
+            let current = '';
+            for (const id of sections) {
+                const el = document.getElementById(id);
+                if (el) {
+                    const rect = el.getBoundingClientRect();
+                    // La section est actuellement visible au tiers supérieur de l'écran
+                    if (rect.top <= 250 && rect.bottom >= 150) {
+                        current = id;
+                    }
+                }
+            }
+
+            setActiveSection(current);
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll();
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
     const handleClick = (e, targetId) => {
         e.preventDefault();
         const el = document.getElementById(targetId);
@@ -18,10 +58,42 @@ export default function Navbar({ developer = {} }) {
                     LM_DEV
                 </a>
                 <ul className="nav-links">
-                    <li><a href="#about" onClick={(e) => handleClick(e, 'about')}>À propos</a></li>
-                    <li><a href="#projects" onClick={(e) => handleClick(e, 'projects')}>Projets</a></li>
-                    <li><a href="#education" onClick={(e) => handleClick(e, 'education')}>Parcours</a></li>
-                    <li><a href="#contact" onClick={(e) => handleClick(e, 'contact')}>Contact</a></li>
+                    <li>
+                        <a
+                            href="#about"
+                            className={activeSection === 'about' ? 'active' : ''}
+                            onClick={(e) => handleClick(e, 'about')}
+                        >
+                            À propos
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href="#projects"
+                            className={activeSection === 'projects' ? 'active' : ''}
+                            onClick={(e) => handleClick(e, 'projects')}
+                        >
+                            Projets
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href="#education"
+                            className={activeSection === 'education' ? 'active' : ''}
+                            onClick={(e) => handleClick(e, 'education')}
+                        >
+                            Parcours
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href="#contact"
+                            className={activeSection === 'contact' ? 'active' : ''}
+                            onClick={(e) => handleClick(e, 'contact')}
+                        >
+                            Contact
+                        </a>
+                    </li>
                 </ul>
                 <div className="nav-socials">
                     {githubUrl && (
