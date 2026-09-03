@@ -39,7 +39,7 @@
     --ease-bounce: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* --- Reset --- */
+/* --- Reset & Base Layout --- */
 *, *::before, *::after {
     margin: 0;
     padding: 0;
@@ -49,27 +49,23 @@
 html {
     scroll-behavior: smooth;
     color-scheme: dark;
-    overflow-x: hidden;
-    width: 100%;
-    max-width: 100vw;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.12) var(--bg-dark);
 }
 
 body {
     background: var(--bg-dark);
     color: var(--text-primary);
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    overflow-x: hidden;
-    width: 100%;
-    max-width: 100vw;
     line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 #root {
-    overflow-x: hidden;
-    width: 100%;
-    max-width: 100vw;
+    min-height: 100vh;
 }
 
 ::selection {
@@ -101,10 +97,7 @@ body {
    =================================================== */
 .animated-bg {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    inset: 0;
     z-index: -2;
     overflow: hidden;
     background: var(--bg-dark);
@@ -194,7 +187,6 @@ header {
     left: 0;
     right: 0;
     width: 100%;
-    max-width: 100vw;
     box-sizing: border-box;
     padding: 1rem 2rem;
     background: rgba(3, 7, 18, 0.78);

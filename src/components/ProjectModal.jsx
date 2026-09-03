@@ -7,10 +7,6 @@ export default function ProjectModal({ project, allProjects = [], onSelectProjec
         if (!project) return;
         playSound('open');
 
-        // Prevent body scroll
-        const originalOverflow = document.body.style.overflow;
-        document.body.style.overflow = 'hidden';
-
         const handleKeyDown = (e) => {
             if (e.key === 'Escape') {
                 playSound('close');
@@ -32,7 +28,6 @@ export default function ProjectModal({ project, allProjects = [], onSelectProjec
 
         window.addEventListener('keydown', handleKeyDown);
         return () => {
-            document.body.style.overflow = originalOverflow;
             window.removeEventListener('keydown', handleKeyDown);
         };
     }, [project, allProjects, onSelectProject, onClose]);

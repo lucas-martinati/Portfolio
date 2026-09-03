@@ -38,13 +38,7 @@ export default function CommandPalette({
     useEffect(() => {
         if (isOpen) {
             playSound('open');
-            const originalOverflow = document.body.style.overflow;
-            document.body.style.overflow = 'hidden';
             setTimeout(() => inputRef.current?.focus(), 50);
-
-            return () => {
-                document.body.style.overflow = originalOverflow;
-            };
         }
     }, [isOpen]);
 

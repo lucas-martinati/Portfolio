@@ -55,14 +55,13 @@ export default function Navbar({ developer = {}, onOpenPalette, onShowToast }) {
     // Lock body scroll when mobile menu is open
     useEffect(() => {
         if (!mobileMenuOpen) return;
-        const original = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
         const handleKeyDown = (e) => {
             if (e.key === 'Escape') setMobileMenuOpen(false);
         };
         window.addEventListener('keydown', handleKeyDown);
         return () => {
-            document.body.style.overflow = original;
+            document.body.style.overflow = '';
             window.removeEventListener('keydown', handleKeyDown);
         };
     }, [mobileMenuOpen]);
