@@ -1,6 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { GithubIcon, LinkedinIcon, MailIcon, TerminalIcon, VolumeUpIcon, VolumeOffIcon, CommandIcon } from './Icons';
 import { playSound, isSoundEnabled, toggleSound } from '../utils/audio';
+
+const NAV_ITEMS = [
+    { id: 'about', label: 'À propos' },
+    { id: 'projects', label: 'Projets', mobileBadge: '16+' },
+    { id: 'recruiter', label: 'Recrutement', mobileLabel: '🎯 Espace Recruteur', isRecruiter: true, requireSeeking: true },
+    { id: 'education', label: 'Parcours', mobileLabel: 'Parcours & Diplômes' },
+    { id: 'contact', label: 'Contact', mobileLabel: 'Contact & Réseaux' }
+];
 
 export default function Navbar({ developer = {}, onOpenPalette, onShowToast }) {
     const [activeSection, setActiveSection] = useState('');
@@ -9,10 +17,12 @@ export default function Navbar({ developer = {}, onOpenPalette, onShowToast }) {
 
     const isSeeking = developer.recruitment?.enabled ?? developer.recruitment?.seeking ?? true;
 
+    const navItems = useMemo(() => {
+        return NAV_ITEMS.filter((item) => !item.requireSeeking || isSeeking);
+    }, [isSeeking]);
+
     useEffect(() => {
-        const sections = isSeeking
-            ? ['about', 'projects', 'recruiter', 'education', 'contact']
-            : ['about', 'projects', 'education', 'contact'];
+        const sections = navItems.map((item) => item.id);
 
         const handleScroll = () => {
             if (window.scrollY < 200) {
@@ -42,7 +52,7 @@ export default function Navbar({ developer = {}, onOpenPalette, onShowToast }) {
         window.addEventListener('scroll', handleScroll, { passive: true });
         handleScroll();
         return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
+    }, [navItems]);
 
     const handleClick = (e, targetId) => {
         e.preventDefault();
@@ -96,54 +106,18 @@ export default function Navbar({ developer = {}, onOpenPalette, onShowToast }) {
 
                 {/* Desktop Nav Links */}
                 <ul className="nav-links">
-                    <li>
-                        <a
-                            href="#about"
-                            className={activeSection === 'about' ? 'active' : ''}
-                            onClick={(e) => handleClick(e, 'about')}
-                        >
-                            À propos
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            href="#projects"
-                            className={activeSection === 'projects' ? 'active' : ''}
-                            onClick={(e) => handleClick(e, 'projects')}
-                        >
-                            Projets
-                        </a>
-                    </li>
-                    {isSeeking && (
-                        <li>
+                    {navItems.map((item) => (
+                        <li key={item.id}>
                             <a
-                                href="#recruiter"
-                                className={`nav-recruiter-link ${activeSection === 'recruiter' ? 'active' : ''}`}
-                                onClick={(e) => handleClick(e, 'recruiter')}
+                                href={`#${item.id}`}
+                                className={`${item.isRecruiter ? 'nav-recruiter-link' : ''} ${activeSection === item.id ? 'active' : ''}`}
+                                onClick={(e) => handleClick(e, item.id)}
                             >
-                                <span className="nav-pulse-dot"></span>
-                                Recrutement
+                                {item.isRecruiter && <span className="nav-pulse-dot"></span>}
+                                {item.label}
                             </a>
                         </li>
-                    )}
-                    <li>
-                        <a
-                            href="#education"
-                            className={activeSection === 'education' ? 'active' : ''}
-                            onClick={(e) => handleClick(e, 'education')}
-                        >
-                            Parcours
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            href="#contact"
-                            className={activeSection === 'contact' ? 'active' : ''}
-                            onClick={(e) => handleClick(e, 'contact')}
-                        >
-                            Contact
-                        </a>
-                    </li>
+                    ))}
                 </ul>
 
                 {/* Desktop Nav Controls (hidden on mobile) */}
@@ -243,48 +217,21 @@ export default function Navbar({ developer = {}, onOpenPalette, onShowToast }) {
                 <div className="mobile-nav-backdrop" onClick={() => setMobileMenuOpen(false)} />
                 <div className="mobile-nav-menu" role="dialog" aria-modal="true" aria-label="Menu de navigation mobile">
                     <div className="mobile-nav-links">
-                        <a
-                            href="#about"
-                            className={`mobile-nav-link ${activeSection === 'about' ? 'active' : ''}`}
-                            onClick={(e) => handleClick(e, 'about')}
-                        >
-                            <span>À propos</span>
-                            <span className="mobile-link-arrow">→</span>
-                        </a>
-                        <a
-                            href="#projects"
-                            className={`mobile-nav-link ${activeSection === 'projects' ? 'active' : ''}`}
-                            onClick={(e) => handleClick(e, 'projects')}
-                        >
-                            <span>Projets</span>
-                            <span className="mobile-link-pill">16+</span>
-                        </a>
-                        {isSeeking && (
+                        {navItems.map((item) => (
                             <a
-                                href="#recruiter"
-                                className={`mobile-nav-link recruiter ${activeSection === 'recruiter' ? 'active' : ''}`}
-                                onClick={(e) => handleClick(e, 'recruiter')}
+                                key={item.id}
+                                href={`#${item.id}`}
+                                className={`mobile-nav-link ${item.isRecruiter ? 'recruiter' : ''} ${activeSection === item.id ? 'active' : ''}`}
+                                onClick={(e) => handleClick(e, item.id)}
                             >
-                                <span>🎯 Espace Recruteur</span>
-                                <span className="mobile-link-arrow">→</span>
+                                <span>{item.mobileLabel || item.label}</span>
+                                {item.mobileBadge ? (
+                                    <span className="mobile-link-pill">{item.mobileBadge}</span>
+                                ) : (
+                                    <span className="mobile-link-arrow">→</span>
+                                )}
                             </a>
-                        )}
-                        <a
-                            href="#education"
-                            className={`mobile-nav-link ${activeSection === 'education' ? 'active' : ''}`}
-                            onClick={(e) => handleClick(e, 'education')}
-                        >
-                            <span>Parcours &amp; Diplômes</span>
-                            <span className="mobile-link-arrow">→</span>
-                        </a>
-                        <a
-                            href="#contact"
-                            className={`mobile-nav-link ${activeSection === 'contact' ? 'active' : ''}`}
-                            onClick={(e) => handleClick(e, 'contact')}
-                        >
-                            <span>Contact &amp; Réseaux</span>
-                            <span className="mobile-link-arrow">→</span>
-                        </a>
+                        ))}
                     </div>
 
                     <div className="mobile-nav-divider" />

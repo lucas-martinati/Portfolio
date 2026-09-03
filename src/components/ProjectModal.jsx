@@ -1,42 +1,66 @@
-import { useEffect } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { CloseIcon, ExternalLinkIcon, GithubIcon, ArrowLeftIcon, ArrowRightIcon, SparklesIcon } from './Icons';
 import { playSound } from '../utils/audio';
 
+const CATEGORY_LABELS = {
+    extension: 'Extension',
+    system: 'Système & CLI',
+    web: 'Web & Full-Stack'
+};
+
 export default function ProjectModal({ project, allProjects = [], onSelectProject, onClose }) {
+    const wasOpenRef = useRef(false);
+
+    const currentIndex = project
+        ? allProjects.findIndex((p) => p.title === project.title)
+        : -1;
+    const hasPrev = currentIndex > 0;
+    const hasNext = currentIndex !== -1 && currentIndex < allProjects.length - 1;
+
+    const goToPrev = useCallback(() => {
+        if (hasPrev) {
+            playSound('click');
+            onSelectProject(allProjects[currentIndex - 1]);
+        }
+    }, [hasPrev, currentIndex, allProjects, onSelectProject]);
+
+    const goToNext = useCallback(() => {
+        if (hasNext) {
+            playSound('click');
+            onSelectProject(allProjects[currentIndex + 1]);
+        }
+    }, [hasNext, currentIndex, allProjects, onSelectProject]);
+
+    // Play 'open' sound only when modal first opens
+    useEffect(() => {
+        if (project && !wasOpenRef.current) {
+            playSound('open');
+            wasOpenRef.current = true;
+        } else if (!project) {
+            wasOpenRef.current = false;
+        }
+    }, [project]);
+
+    // Keyboard navigation (Escape, Left, Right)
     useEffect(() => {
         if (!project) return;
-        playSound('open');
 
         const handleKeyDown = (e) => {
             if (e.key === 'Escape') {
                 playSound('close');
                 onClose();
             } else if (e.key === 'ArrowRight') {
-                const currentIndex = allProjects.findIndex((p) => p.title === project.title);
-                if (currentIndex !== -1 && currentIndex < allProjects.length - 1) {
-                    playSound('click');
-                    onSelectProject(allProjects[currentIndex + 1]);
-                }
+                goToNext();
             } else if (e.key === 'ArrowLeft') {
-                const currentIndex = allProjects.findIndex((p) => p.title === project.title);
-                if (currentIndex > 0) {
-                    playSound('click');
-                    onSelectProject(allProjects[currentIndex - 1]);
-                }
+                goToPrev();
             }
         };
 
         window.addEventListener('keydown', handleKeyDown);
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [project, allProjects, onSelectProject, onClose]);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [project, onClose, goToNext, goToPrev]);
 
     if (!project) return null;
-
-    const currentIndex = allProjects.findIndex((p) => p.title === project.title);
-    const hasPrev = currentIndex > 0;
-    const hasNext = currentIndex !== -1 && currentIndex < allProjects.length - 1;
 
     const handleOverlayClick = (e) => {
         if (e.target === e.currentTarget) {
@@ -45,7 +69,8 @@ export default function ProjectModal({ project, allProjects = [], onSelectProjec
         }
     };
 
-    const hasImage = !!project.imageUrl;
+    const hasImage = Boolean(project.imageUrl);
+    const categoryLabel = CATEGORY_LABELS[project.category] || 'Web & Full-Stack';
 
     return (
         <div className="modal-overlay" onClick={handleOverlayClick} role="dialog" aria-modal="true">
@@ -87,9 +112,7 @@ export default function ProjectModal({ project, allProjects = [], onSelectProjec
                             <span className={`project-status ${project.status?.className || 'status-completed'}`}>
                                 {project.status?.label || 'Terminé'}
                             </span>
-                            <span className="modal-category-tag">
-                                {project.category === 'extension' ? 'Extension' : project.category === 'system' ? 'Système & CLI' : 'Web & Full-Stack'}
-                            </span>
+                            <span className="modal-category-tag">{categoryLabel}</span>
                         </div>
                         <h2 className="modal-title">{project.title}</h2>
                     </div>
@@ -155,12 +178,7 @@ export default function ProjectModal({ project, allProjects = [], onSelectProjec
                                 type="button"
                                 className="modal-nav-btn"
                                 disabled={!hasPrev}
-                                onClick={() => {
-                                    if (hasPrev) {
-                                        playSound('click');
-                                        onSelectProject(allProjects[currentIndex - 1]);
-                                    }
-                                }}
+                                onClick={goToPrev}
                                 title="Projet précédent (Flèche Gauche)"
                             >
                                 <ArrowLeftIcon size={16} />
@@ -173,12 +191,7 @@ export default function ProjectModal({ project, allProjects = [], onSelectProjec
                                 type="button"
                                 className="modal-nav-btn"
                                 disabled={!hasNext}
-                                onClick={() => {
-                                    if (hasNext) {
-                                        playSound('click');
-                                        onSelectProject(allProjects[currentIndex + 1]);
-                                    }
-                                }}
+                                onClick={goToNext}
                                 title="Projet suivant (Flèche Droite)"
                             >
                                 <span>Suivant</span>
